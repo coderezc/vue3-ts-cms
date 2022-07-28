@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 // export interface HYRequestInterceptors<T = AxiosResponse> {
 //   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
@@ -11,13 +11,13 @@ import type { AxiosRequestConfig } from 'axios'
 //   interceptors?: HYRequestInterceptors<T>
 //   showLoading?: boolean
 // }
-export interface ERequestInterceptors {
+export interface ERequestInterceptors<T = AxiosResponse> {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
   requestInterceptorCatch?: (error: any) => any
-  responseInterceptor?: (res: any) => any
+  responseInterceptor?: (res: T) => T
   reponseInterceptorCatch?: (error: any) => any
 }
-export interface ERequestConfig extends AxiosRequestConfig {
-  interceptors?: ERequestInterceptors
+export interface ERequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
+  interceptors?: ERequestInterceptors<T>
   showLoading?: boolean
 }
