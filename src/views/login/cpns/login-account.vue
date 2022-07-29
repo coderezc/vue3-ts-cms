@@ -22,11 +22,13 @@ import { ElForm } from 'element-plus'
 import { defineComponent, reactive, ref } from 'vue'
 import { rules } from '../config/accountConfig'
 import localCache from '@/utils/cache'
+import { useStore } from 'vuex'
 export default defineComponent({
   setup() {
+    const store = useStore()
     const account = reactive({
-      userName: '',
-      password: ''
+      userName: localCache.getCache('userName') ?? '',
+      password: localCache.getCache('password') ?? ''
     })
     const formRef = ref<InstanceType<typeof ElForm>>()
     const accountAction = (isKeepPassword: boolean) => {
@@ -37,9 +39,13 @@ export default defineComponent({
             //本地缓存
             localCache.setCache('userName', account.userName)
             localCache.setCache('password', account.password)
+          } else {
+            localCache.removeCache('userName')
+            localCache.removeCache('password')
           }
         }
       })
+      store.dispatch('login/accountLoginAction', { ...account })
     }
     return { account, rules, accountAction, formRef }
   }

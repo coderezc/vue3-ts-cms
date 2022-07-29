@@ -10,19 +10,15 @@ const eRequest = new ERequest({
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`
       }
-      console.log('请求拦截')
       return config
     },
     requestInterceptorCatch: (error) => {
-      console.log('请求失败的拦截')
       return error
     },
     responseInterceptor: (res) => {
-      console.log('响应拦截')
       return res
     },
     reponseInterceptorCatch: (error) => {
-      console.log('响应失败的拦截')
       return error
     }
   }

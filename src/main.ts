@@ -13,11 +13,3 @@ app.use(router)
 app.use(store)
 app.use(ElementPlus)
 app.mount('#app')
-console.log(process.env.VUE_APP_BASE_URL)
-console.log(process.env.VUE_APP_BASE_NAME)
-eRequest
-  .request({
-    url: 'http://httpbin.org/get',
-    method: 'GET'
-  })
-  .then((res) => console.log('111', res))

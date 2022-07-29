@@ -25,7 +25,6 @@ class ERequest {
     // 添加所有实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有实例都有的请求拦截器')
         if (this.showLoading) {
           this.loading = ElLoading.service({
             lock: true,
@@ -37,25 +36,21 @@ class ERequest {
         return config
       },
       (err) => {
-        console.log('所有实例都有的请求错误拦截器')
         return err
       }
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有实例都有的响应拦截器')
         // 移除loading
         this.loading?.close()
         const data = res.data
         if (data.returnCode === '-1001') {
-          console.log('请求失败-错误信息')
           return
         } else {
           return data
         }
       },
       (err) => {
-        console.log('所有实例都有的响应失败拦截器')
         if (err.response.status == 404) {
           console.log('404 not found')
         }

@@ -45,7 +45,6 @@ export default defineComponent({
     const isKeepPassword = ref(true)
     const loginAccountRef = ref<InstanceType<typeof loginAccount>>()
     const loginBtn = () => {
-      alert('正在登陆')
       loginAccountRef.value?.accountAction(isKeepPassword.value)
     }
     return { isKeepPassword, loginBtn, loginAccountRef }
