@@ -1,43 +1,41 @@
 <template>
   <div>
     <el-form
-      :model="ruleForm"
+      :model="account"
       status-icon
       :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
-      class="demo-ruleForm"
+      label-width="70px"
+      ref="formRef"
     >
-      <el-form-item label="密码" prop="pass">
-        <el-input
-          type="password"
-          v-model="ruleForm.pass"
-          autocomplete="off"
-        ></el-input>
+      <el-form-item label="用户名" prop="userName">
+        <el-input type="text" v-model="account.userName"></el-input>
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input
-          type="password"
-          v-model="ruleForm.checkPass"
-          autocomplete="off"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')"
-          >提交</el-button
-        >
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="account.password"></el-input>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-
+import { ElForm } from 'element-plus'
+import { defineComponent, reactive, ref } from 'vue'
+import { rules } from '../config/accountConfig'
 export default defineComponent({
   setup() {
-    return {}
+    const account = reactive({
+      userName: '',
+      password: ''
+    })
+    const formRef = ref<InstanceType<typeof ElForm>>()
+    const accountAction = () => {
+      formRef.value?.validate((valid) => {
+        if (valid) {
+          console.log('验证通过，执行登录')
+        }
+      })
+    }
+    return { account, rules, accountAction, formRef }
   }
 })
 </script>
