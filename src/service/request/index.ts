@@ -44,11 +44,7 @@ class ERequest {
         // 移除loading
         this.loading?.close()
         const data = res.data
-        if (data.returnCode === '-1001') {
-          return
-        } else {
-          return data
-        }
+        return data
       },
       (err) => {
         if (err.response.status == 404) {
