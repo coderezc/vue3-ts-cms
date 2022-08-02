@@ -1,7 +1,7 @@
 const department = () =>
-  import('@/views/main/symstem/department/department.vue')
+  import('@/views/main/system/department/department.vue')
 export default {
-  path: '/main/symstem/department',
+  path: '/main/system/department',
   name: 'department',
   component: department,
   children: []
