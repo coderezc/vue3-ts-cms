@@ -13,7 +13,7 @@
       ><Expand
     /></el-icon>
     <div class="content">
-      <div>面包屑</div>
+      <e-breadcrumb />
       <userInfo></userInfo>
     </div>
   </div>
@@ -23,12 +23,14 @@
 import { defineComponent, ref } from 'vue'
 import { Fold, Expand } from '@element-plus/icons-vue'
 import userInfo from './user-info.vue'
+import EBreadcrumb from '@/base-ui/breadcrumb'
 export default defineComponent({
   emits: ['foldChange'],
   components: {
     Fold,
     Expand,
-    userInfo
+    userInfo,
+    EBreadcrumb
   },
   setup(props, { emit }) {
     const isFold = ref(false)
