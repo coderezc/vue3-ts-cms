@@ -13,17 +13,20 @@
       ><Expand
     /></el-icon>
     <div class="content">
-      <e-breadcrumb />
+      <e-breadcrumb :breadcrumbs="breadcrumbs" />
       <userInfo></userInfo>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { Fold, Expand } from '@element-plus/icons-vue'
 import userInfo from './user-info.vue'
-import EBreadcrumb from '@/base-ui/breadcrumb'
+import EBreadcrumb, { IBreadcrumb } from '@/base-ui/breadcrumb'
+import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
+import { pathMapBreadcrumbs } from '@/utils/map-menus'
 export default defineComponent({
   emits: ['foldChange'],
   components: {
@@ -38,7 +41,16 @@ export default defineComponent({
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
-    return { isFold, handleFoldClick }
+    //面包屑数据
+    const breadcrumbs = computed(() => {
+      const store = useStore()
+      const userMenus = store.state.login.userMenus
+      const route = useRoute()
+      const currentPath = route.path
+      return pathMapBreadcrumbs(userMenus, currentPath)
+    })
+
+    return { isFold, handleFoldClick, breadcrumbs }
   }
 })
 </script>
