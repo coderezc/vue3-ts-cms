@@ -54,7 +54,7 @@ class ERequest {
       }
     )
   }
-  request<T>(config: ERequestConfig<T>): Promise<T> {
+  request<T = any>(config: ERequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       //某一个请求的拦截
       if (config.interceptors?.requestInterceptor) {
@@ -76,13 +76,13 @@ class ERequest {
         })
     })
   }
-  get<T>(config: ERequestConfig<T>): Promise<T> {
+  get<T = any>(config: ERequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
-  post<T>(config: ERequestConfig<T>): Promise<T> {
+  post<T = any>(config: ERequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
-  delete<T>(config: ERequestConfig<T>): Promise<T> {
+  delete<T = any>(config: ERequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
 }

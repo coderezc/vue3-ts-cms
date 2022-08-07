@@ -1,18 +1,32 @@
 <template>
   <div class="user">
     <page-search :searchFormConfig="searchFormConfig"></page-search>
-    <div class="content"></div>
+    <div class="content">
+      <e-table :listData="userList" :propList="propList">
+        <template #status="scope">
+          {{ scope.row.enable ? '启用' : '禁用' }}
+        </template>
+        <template #createAt="scope">
+          {{ scope.row.createAt }}
+        </template>
+        <template #updateAt="scope">
+          {{ scope.row.updateAt }}
+        </template>
+      </e-table>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { useStore } from 'vuex'
+import { defineComponent, computed } from 'vue'
+import { useStore } from '@/store'
 import PageSearch from '@/components/page-search'
 import { searchFormConfig } from './config/search.config'
+import ETable from '@/base-ui/table'
 export default defineComponent({
   components: {
-    PageSearch
+    PageSearch,
+    ETable
   },
   name: 'user',
   setup() {
@@ -24,14 +38,34 @@ export default defineComponent({
         size: 10
       }
     })
-    return { searchFormConfig }
+    const userList = computed(() => store.state.system.userList)
+    const userCount = computed(() => store.state.system.userCount)
+    const propList = [
+      { prop: 'name', label: '用户名', minWidth: '100' },
+      { prop: 'realname', label: '姓名', minWidth: '100' },
+      { prop: 'cellphone', label: '用户名', minWidth: '100' },
+      { prop: 'enable', label: '状态', minWidth: '100', slotName: 'status' },
+      {
+        prop: 'createAt',
+        label: '创建时间',
+        minWidth: '250',
+        slotName: 'createAt'
+      },
+      {
+        prop: 'updateAt',
+        label: '更新时间',
+        minWidth: '250',
+        slotName: 'updateAt'
+      }
+    ]
+    return { searchFormConfig, userList, propList }
   }
 })
 </script>
 
 <style scoped>
-.btns {
-  text-align: right;
-  padding: 0 50px 20px 0;
+.content {
+  padding: 20px;
+  border-top: 20px solid #f5f5f5;
 }
 </style>

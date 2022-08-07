@@ -42,4 +42,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.btns {
+  text-align: right;
+  padding: 0 50px 20px 0;
+}
+</style>
