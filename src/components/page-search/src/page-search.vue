@@ -7,7 +7,7 @@
         </template>
         <template #footer>
           <div class="btns">
-            <el-button type="primary">重置</el-button>
+            <el-button type="primary" @click="handleResetClick">重置</el-button>
             <el-button type="primary">搜索</el-button>
           </div>
         </template>
@@ -29,15 +29,17 @@ export default defineComponent({
   components: {
     EForm
   },
-  setup() {
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      sport: '',
-      createTime: ''
-    })
-    return { formData }
+  setup(props) {
+    const formItems = props.searchFormConfig?.formItems ?? []
+    const formOriginData: any = {}
+    const handleResetClick = () => {
+      formData.value = formOriginData
+    }
+    for (const item of formItems) {
+      formOriginData[item.field] = ''
+    }
+    const formData = ref(formOriginData)
+    return { formData, handleResetClick }
   }
 })
 </script>

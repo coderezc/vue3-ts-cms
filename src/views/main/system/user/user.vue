@@ -1,71 +1,32 @@
 <template>
   <div class="user">
     <page-search :searchFormConfig="searchFormConfig"></page-search>
-    <div class="content">
-      <e-table :listData="userList" :propList="propList">
-        <template #status="scope">
-          {{ scope.row.enable ? '启用' : '禁用' }}
-        </template>
-        <template #createAt="scope">
-          {{ scope.row.createAt }}
-        </template>
-        <template #updateAt="scope">
-          {{ scope.row.updateAt }}
-        </template>
-      </e-table>
-    </div>
+    <page-content
+      :contentTableConfig="contentTableConfig"
+      pageName="users"
+    ></page-content>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent } from 'vue'
 import PageSearch from '@/components/page-search'
 import { searchFormConfig } from './config/search.config'
-import ETable from '@/base-ui/table'
+import { contentTableConfig } from './config/content.config'
+import pageContent from '@/components/page-content'
 export default defineComponent({
   components: {
     PageSearch,
-    ETable
+    pageContent
   },
-  name: 'user',
+  name: 'users',
   setup() {
-    const store = useStore()
-    store.dispatch('system/getPageListAction', {
-      pageUrl: '/users/list',
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
-    const userList = computed(() => store.state.system.userList)
-    const userCount = computed(() => store.state.system.userCount)
-    const propList = [
-      { prop: 'name', label: '用户名', minWidth: '100' },
-      { prop: 'realname', label: '姓名', minWidth: '100' },
-      { prop: 'cellphone', label: '用户名', minWidth: '100' },
-      { prop: 'enable', label: '状态', minWidth: '100', slotName: 'status' },
-      {
-        prop: 'createAt',
-        label: '创建时间',
-        minWidth: '250',
-        slotName: 'createAt'
-      },
-      {
-        prop: 'updateAt',
-        label: '更新时间',
-        minWidth: '250',
-        slotName: 'updateAt'
-      }
-    ]
-    return { searchFormConfig, userList, propList }
+    return {
+      searchFormConfig,
+      contentTableConfig
+    }
   }
 })
 </script>
 
-<style scoped>
-.content {
-  padding: 20px;
-  border-top: 20px solid #f5f5f5;
-}
-</style>
+<style scoped></style>

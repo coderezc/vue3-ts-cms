@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { propsToAttrMap } from '@vue/shared'
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, ref, watch, computed } from 'vue'
 import { IFormItem } from '../types/index'
 export default defineComponent({
   props: {
@@ -85,6 +85,12 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const formData = ref({ ...props.modelValue })
+    watch(
+      ()=>props.modelValue,
+      (newValue) => {
+        formData.value = { ...newValue }
+      }
+    )
     watch(formData, (newValue) =>
       emit('update:modelValue', newValue, {
         deep: true

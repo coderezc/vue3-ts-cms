@@ -66,7 +66,6 @@ export default defineComponent({
     const defaultValue = currentPath == '/main' ? ref('1') : ref(menu.id + '')
     // event handle
     const handleMenuItemClick = (item: any) => {
-      console.log('--------')
       router.push({
         path: item.url ?? '/not-found'
       })
