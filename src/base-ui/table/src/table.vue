@@ -28,7 +28,7 @@
         width="80"
       ></el-table-column>
       <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">{{
               scope.row[propItem.prop]
@@ -42,14 +42,11 @@
         <div class="demo-pagination-block">
           <div class="demonstration">All combined</div>
           <el-pagination
-            v-model:currentPage="currentPage4"
-            v-model:page-size="pageSize4"
-            :page-sizes="[100, 200, 300, 400]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
+            :currentPage="page.currentSize"
+            :page-size="page.pageSize"
+            :page-sizes="[5, 10, 20]"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400"
+            :total="listCount"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
@@ -76,6 +73,10 @@ export default defineComponent({
       type: Boolean,
       dafault: false
     },
+    listCount: {
+      type: Number,
+      default: 0
+    },
     listData: {
       type: Array,
       required: true
@@ -83,14 +84,24 @@ export default defineComponent({
     propList: {
       type: Array,
       required: true
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:page'],
   setup(props, { emit }) {
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }
-    return { handleSelectionChange }
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
+    }
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
+    }
+    return { handleSelectionChange, handleSizeChange, handleCurrentChange }
   }
 })
 </script>

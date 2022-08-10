@@ -1,7 +1,14 @@
 import { IForm } from '@/base-ui/form'
+import { inputEmits } from 'element-plus'
 export const searchFormConfig: IForm = {
   labelWidth: '120px',
   formItems: [
+    {
+      field: 'id',
+      type: 'input',
+      label: 'ID',
+      placeholder: '请输入id'
+    },
     {
       field: 'name',
       type: 'input',
@@ -9,25 +16,36 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入用户名'
     },
     {
-      field: 'password',
-      type: 'password',
-      label: '密码',
-      placeholder: '请输入密码'
+      field: 'realname',
+      type: 'input',
+      label: '真实姓名',
+      placeholder: '请输入真实姓名'
     },
     {
-      field: 'spord',
+      field: 'cellphone',
+      type: 'input',
+      label: '电话号码',
+      placeholder: '请输入电话号码'
+    },
+    {
+      field: 'enable',
       type: 'select',
-      label: '喜欢的运动',
-      placeholder: 'sdadasd',
+      label: '用户状态',
+      placeholder: '请选择用户状态',
       options: [
-        { title: '篮球', value: 'basketball' },
-        { title: '足球', value: 'football' }
+        { title: '启用', value: 1 },
+        { title: '禁用', value: 0 }
       ]
     },
     {
-      field: 'createTime',
+      field: 'createAt',
       type: 'datepicker',
-      label: '创建时间'
+      label: '创建时间',
+      otherOptions: {
+        startPlaceholder: '开始时间',
+        endPlaceholder: '结束时间',
+        type: 'daterange'
+      }
     }
   ],
   itemStyle: {

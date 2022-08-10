@@ -8,7 +8,7 @@
         <template #footer>
           <div class="btns">
             <el-button type="primary" @click="handleResetClick">重置</el-button>
-            <el-button type="primary">搜索</el-button>
+            <el-button type="primary" @click="handleQueryClick">搜索</el-button>
           </div>
         </template>
       </e-form>
@@ -29,17 +29,22 @@ export default defineComponent({
   components: {
     EForm
   },
-  setup(props) {
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(props, { emit }) {
     const formItems = props.searchFormConfig?.formItems ?? []
     const formOriginData: any = {}
     const handleResetClick = () => {
       formData.value = formOriginData
+      emit('resetBtnClick')
     }
     for (const item of formItems) {
       formOriginData[item.field] = ''
     }
     const formData = ref(formOriginData)
-    return { formData, handleResetClick }
+    const handleQueryClick = () => {
+      emit('queryBtnClick', formData.value)
+    }
+    return { formData, handleResetClick, handleQueryClick }
   }
 })
 </script>

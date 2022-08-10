@@ -9,27 +9,40 @@ const systemModule: Module<ISystemState, IRootState> = {
       usersList: [],
       usersCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+      goodsList: [],
+      goodsCount: 0
     }
   },
   mutations: {
-    changeUsersList(state, usersList: any[]) {
-      state.usersList = usersList
+    changeUsersList(state, list: any[]) {
+      state.usersList = list
     },
-    changeUsersCount(state, usersCount: number) {
-      state.usersCount = usersCount
+    changeUsersCount(state, count: number) {
+      state.usersCount = count
     },
-    changeRoleList(state, roleList: any[]) {
-      state.roleList = roleList
+    changeRoleList(state, list: any[]) {
+      state.roleList = list
     },
-    changeRoleCount(state, roleCount: number) {
-      state.roleCount = roleCount
+    changeRoleCount(state, count: number) {
+      state.roleCount = count
+    },
+    changeGoodsList(state, list: any[]) {
+      state.goodsList = list
+    },
+    changeGoodsCount(state, count: number) {
+      state.goodsCount = count
     }
   },
   getters: {
     pageListData(state) {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`]
+      }
+    },
+    pageListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
       }
     }
   },

@@ -1,6 +1,11 @@
 <template>
   <div class="page-content">
-    <e-table v-bind="contentTableConfig" :listData="dataList">
+    <e-table
+      v-bind="contentTableConfig"
+      :listData="dataList"
+      :listCount="dataCount"
+      v-model:page="pageInfo"
+    >
       <!-- header中的插槽 -->
       <template #headerHandler>
         <el-button type="primary">新建用户</el-button>
@@ -28,12 +33,21 @@
           <el-button size="small" type="danger">删除</el-button>
         </div>
       </template>
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
+      </template>
     </e-table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import ETable from '@/base-ui/table'
 export default defineComponent({
@@ -52,17 +66,36 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
-    store.dispatch('system/getPageListAction', {
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    watch(pageInfo, () => getPageData())
+    const getPageData = (queryInfo: any = {}) => {
+      store.dispatch('system/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
+          ...queryInfo
+        }
+      })
+    }
+    getPageData()
     const dataList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     )
-    return { dataList }
+    const dataCount = computed(() =>
+      store.getters[`system/pageListCount`](props.pageName)
+    )
+
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slot === 'status') return false
+        if (item.slot === 'creatAt') return false
+        if (item.slot === 'updateAt') return false
+        if (item.slot === 'handler') return false
+        return true
+      }
+    )
+    return { dataList, getPageData, dataCount, pageInfo, otherPropSlots }
   }
 })
 </script>
